@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true"/>
+
+    <package name="default" extends="struts-default">
+        
+        <interceptors>
+            <!-- define interceptors-->
+            <interceptor name="Login" class="interceptors.LoginInterceptor"/>
+            <!-- define stacks-->
+            <interceptor-stack name="LoginStack">
+                <interceptor-ref name="defaultStack"/><!--make sure to keep default stack at top of all new interceptors-->
+                <interceptor-ref name="Login"/>
+            </interceptor-stack> 
+        </interceptors>
+        
+        <global-results>
+            <result name="intercepted">/WEB-INF/error.jsp</result>
+        </global-results>
+        
+        <!-- Standard Action mappings -->
+        <action name="register" class="newpackage.Register" method="execute">
+            <result name="success">/thankyou.jsp</result>
+            <result name="input">/register.jsp</result>
+        </action>  
+        
+        <action name="index" class="newpackage.Destroy" method="execute">
+            <result name="success">/register.jsp</result>
+        </action>
+        
+        <action name="buy" class="newpackage.Buy" method="execute">
+            <interceptor-ref name="LoginStack"/>
+            <result name="success">/WEB-INF/bought.jsp</result>
+        </action>
+
+    </package>  
+  
+</struts>
